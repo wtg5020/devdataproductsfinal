@@ -1,0 +1,45 @@
+---
+title: "Car Predictor Webapp"
+author: "Will G"
+date: "December 17, 2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Background 
+
+- Its hard to decide what is more important: Fuel Economy or Performance?
+- The Car Predictor makes the decision for you!
+- Application link: https://wg68data.shinyapps.io/will_g_car_predictor/
+- Github link https://github.com/wtg5020/devdataproductsfinal
+- Allows user to select transmission type, number of cylinders, horsepower, and car weight
+- Outputs estimated MPG and Quarter Mile time as well as a list of existing cars that satisfy the calculations
+
+## Prediction Model Example
+
+The prediction model for the application is below, here the inputs have been simulated for a car weighing 1000 lbs with a 4 cylinder engine thats 90hp with an automatic transmission. The output of the model is also printed as 28.313 MPG
+
+```{r, echo = TRUE}
+modelMul <- lm(mpg ~ wt + cyl + hp + am, data=mtcars)
+mpgP <- predict(modelMul, newdata = 
+    data.frame(wt = 1, cyl = 4, hp = 90, am = 0))
+print(mpgP)
+```
+
+## Data Table Example
+Data Table output based on prediction
+```{r, echo = TRUE}
+dataTable <- cbind(names = rownames(mtcars), mtcars)
+dataTableSelect <- dataTable[, c("names", "mpg", 
+                              "cyl", "hp", "wt", "qsec")] 
+modelQ <- lm(qsec ~ wt + cyl + hp + am, data=mtcars)
+qsecP <- predict(modelQ, 
+newdata = data.frame(wt = 1, cyl = 4, hp = 90, am = 0))
+dataTableSelect[dataTableSelect$qsec >=  qsecP,]
+```
+## Conclusion
+- This application revolutionizes the car design and buying process
+- Uses histroical data to help shape future decisions
